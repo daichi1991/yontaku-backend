@@ -17,10 +17,19 @@ RSpec.describe User, type: :model do
     expect(user.errors[:firebase_local_id]).to include("can't be blank")
   end
 
-  it "activeがない場合、無効" do
+  it "activeを設定しなくてもデフォルトでtrueが入っているため、有効" do
     user = User.new(
       firebase_local_id: 'abcdef12345'
     )
+    expect(user).to be_valid
+    expect(user[:active]).to be true
+  end
+
+  it "activeを削除した場合、無効" do
+    user = User.new(
+      firebase_local_id: 'abcdef12345'
+    )
+    user.active = nil
     user.valid?
     expect(user.errors[:active]).to include("can't be blank")
   end
