@@ -3,4 +3,7 @@ class Sale < ApplicationRecord
   validates :publish, presence: true
 
   belongs_to :product, foreign_key: "product_id"
+
+  has_many :carts
+  has_many :orders
 end

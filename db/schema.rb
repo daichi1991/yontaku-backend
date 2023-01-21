@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_21_070208) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_21_090748) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_070208) do
     t.datetime "updated_at", null: false
     t.index ["payment_method_id"], name: "index_accounts_on_payment_method_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "sale_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_carts_on_sale_id"
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "sale_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_orders_on_account_id"
+    t.index ["sale_id"], name: "index_orders_on_sale_id"
   end
 
   create_table "payment_methods", force: :cascade do |t|
@@ -57,6 +75,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_070208) do
 
   add_foreign_key "accounts", "payment_methods"
   add_foreign_key "accounts", "users"
+  add_foreign_key "carts", "sales"
+  add_foreign_key "carts", "users"
+  add_foreign_key "orders", "accounts"
+  add_foreign_key "orders", "sales"
   add_foreign_key "products", "users"
   add_foreign_key "sales", "products"
 end
