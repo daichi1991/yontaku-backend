@@ -21,6 +21,6 @@ RSpec.describe Sale, type: :model do
   it "publishがない場合、無効" do
     sale = FactoryBot.build(:sale, publish: nil)
     sale.valid?
-    expect(sale.errors[:publish]).to include("can't be blank")
+    expect(sale.errors[:publish]).to include("is not included in the list")
   end
 end

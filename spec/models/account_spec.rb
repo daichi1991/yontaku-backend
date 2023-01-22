@@ -29,9 +29,8 @@ RSpec.describe Account, type: :model do
 
   it "activeを削除した場合、無効" do
     account = FactoryBot.build(:account, active: nil)
-    account.active = nil
     account.valid?
-    expect(account.errors[:active]).to include("can't be blank")
+    expect(account.errors[:active]).to include("is not included in the list")
   end
 
 end

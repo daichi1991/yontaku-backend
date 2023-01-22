@@ -23,7 +23,7 @@ RSpec.describe User, type: :model do
   it "activeを削除した場合、無効" do
     user = FactoryBot.build(:user, active: nil)
     user.valid?
-    expect(user.errors[:active]).to include("can't be blank")
+    expect(user.errors[:active]).to include("is not included in the list")
   end
 
 end

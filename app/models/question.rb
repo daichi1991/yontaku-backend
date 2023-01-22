@@ -4,4 +4,5 @@ class Question < ApplicationRecord
   validates :question, presence: true
 
   belongs_to :product, foreign_key: "product_id"
+  has_many :answers
 end
