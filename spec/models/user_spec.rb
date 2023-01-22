@@ -1,18 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it "irebase_local_id, activeがある場合、有効" do
-    user = User.new(
-      firebase_local_id: 'abcdef12345',
-      active: true
-    )
+  it "firebase_local_id, activeがある場合、有効" do
+    user = FactoryBot.build(:user)
     expect(user).to be_valid
   end
 
   it "firebase_local_idがない場合、無効" do
-    user = User.new(
-      active: true
-    )
+    user = FactoryBot.build(:user, firebase_local_id: nil)
     user.valid?
     expect(user.errors[:firebase_local_id]).to include("can't be blank")
   end
@@ -26,10 +21,7 @@ RSpec.describe User, type: :model do
   end
 
   it "activeを削除した場合、無効" do
-    user = User.new(
-      firebase_local_id: 'abcdef12345'
-    )
-    user.active = nil
+    user = FactoryBot.build(:user, active: nil)
     user.valid?
     expect(user.errors[:active]).to include("can't be blank")
   end
