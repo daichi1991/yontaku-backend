@@ -85,7 +85,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "firebase_local_id", null: false
+    t.string "uid", null: false
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
