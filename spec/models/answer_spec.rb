@@ -27,9 +27,6 @@ RSpec.describe Answer, type: :model do
   end
 
   it "同じquestionでcorrect=trueのレコードが2つ以上ある場合、有効" do
-    
-    binding.pry
-    
     question = FactoryBot.create(:question)
     correct_answer1 = FactoryBot.create(:correct_answer, question: question)
     dummy_answer1 = FactoryBot.create(:dummy_answer, question: question)
