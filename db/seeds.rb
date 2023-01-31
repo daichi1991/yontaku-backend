@@ -16,14 +16,27 @@ product = Product.find_or_create_by(
   description: '最難関私立文系を目指すならマストの英単語を収録！'
 )
 
-sale = Sale.find_or_create_by(
+sale1 = Sale.find_or_create_by(
   product: product,
   price: 1000,
   publish: true
 )
 
+sale2 = Sale.find_or_create_by(
+  product: product,
+  price: 2000,
+  publish: false
+)
+
+sale3 = Sale.find_or_create_by(
+  product: product,
+  price: 3000,
+  publish: true
+)
+
 payment_method = PaymentMethod.find_or_create_by(
-  payment_method: 'フリー'
+  key: 'free',
+  name: 'フリー'
 )
 
 account = Account.find_or_create_by(
@@ -34,12 +47,12 @@ account = Account.find_or_create_by(
 
 order = Order.find_or_create_by(
   account: account,
-  sale: sale
+  sale: sale3
 )
 
 cart = Cart.find_or_create_by(
   user: user,
-  sale: sale
+  sale: sale3
 )
 
 question = Question.find_or_create_by(
@@ -66,7 +79,7 @@ answer3 = Answer.find_or_create_by(
   correct: false
 )
 
-answer3 = Answer.find_or_create_by(
+answer4 = Answer.find_or_create_by(
   question: question,
   answer: 'strawberry',
   correct: false

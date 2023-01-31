@@ -1,5 +1,8 @@
 class PaymentMethod < ApplicationRecord
-    validates :payment_method, presence: true
+    validates :key, presence: true
+    validates :name, presence: true
 
     has_many :accounts
+
+    # scope :default, ->{ where(key: 'free') }
 end

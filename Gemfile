@@ -50,6 +50,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem 'pry-rails'
+  gem 'pry-nav'
   gem 'faker'
 end
 

@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :payment_method do
-    payment_method {Faker::Commerce.vendor}
+    key {Faker::Commerce.product_name()}
+    name {Faker::Commerce.product_name()}
   end
 end

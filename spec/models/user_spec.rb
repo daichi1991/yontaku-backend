@@ -26,4 +26,11 @@ RSpec.describe User, type: :model do
     expect(user.errors[:active]).to include("is not included in the list")
   end
 
+  it "uidが重複した場合、無効" do
+    user1 = FactoryBot.create(:user, uid: 'abcdef12345')
+    user2 = FactoryBot.build(:user, uid: 'abcdef12345')
+    user2.valid?
+    expect(user2.errors[:uid]).to include("has already been taken")
+  end
+
 end
