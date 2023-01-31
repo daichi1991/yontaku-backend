@@ -4,5 +4,5 @@ class PaymentMethod < ApplicationRecord
 
     has_many :accounts
 
-    # scope :default, ->{ where(key: 'free') }
+    scope :default, ->{ find_by(key: 'free') }
 end
