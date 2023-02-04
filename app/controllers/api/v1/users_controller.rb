@@ -6,8 +6,10 @@ class Api::V1::UsersController < ApplicationController
   def create
     payload = verify_id_token(request.headers["Authorization"]&.split&.last)
     raise ArgumentError, 'BadRequest Parameter' if payload.blank?
-    raise ArgumentError, '既に存在しているユーザーです' if User.find_by(uid: payload['uid'])
-    @user = User.create(uid: payload['uid'], active: true)
+    payload_uid = payload['uid']
+    raise ArgumentError, '既に存在しているユーザーです' if User.find_by(uid: payload_uid)
+    User.create_active_user(payload_uid)
+    @user = User.find_by(uid: payload_uid)
     render :show
   end
 
