@@ -32,4 +32,10 @@ class Product < ApplicationRecord
     products_array = products_with_sale(products)
   end
 
+  def self.published_products(products_array)
+    published_products = products_array.select do |product|
+      product["sale"] && product["sale"]["publish"] == true
+    end
+  end
+
 end
