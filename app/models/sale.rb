@@ -7,8 +7,8 @@ class Sale < ApplicationRecord
   has_many :carts
   has_many :orders
 
-  def self.published_sale(product)
-    where(product: product, publish: true).order(updated_at: "ASC").last
+  def self.last_sale(product)
+    where(product: product).order(updated_at: "ASC").last
   end
 
 end

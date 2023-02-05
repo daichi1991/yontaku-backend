@@ -1,5 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authenticate, only: [:create, :my_product]
+  before_action :authenticate, only: [:create, :my_products]
 
   def create
     product = Product.new(product_params)
@@ -16,7 +16,7 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def my_products
-    @my_products = Product.products_with_sale(@current_user)
+    @my_products = Product.my_products(@current_user)
   end
 
   private
