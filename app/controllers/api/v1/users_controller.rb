@@ -8,8 +8,7 @@ class Api::V1::UsersController < ApplicationController
     raise ArgumentError, 'BadRequest Parameter' if payload.blank?
     payload_uid = payload['uid']
     raise ArgumentError, '既に存在しているユーザーです' if User.find_by(uid: payload_uid)
-    User.create_active_user(payload_uid)
-    @user = User.find_by(uid: payload_uid)
+    @user = User.create_active_user(payload_uid)
     render :show
   end
 

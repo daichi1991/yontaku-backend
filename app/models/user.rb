@@ -9,10 +9,11 @@ class User < ApplicationRecord
   after_create :default_account
 
   def self.create_active_user(uid)
+    new_user = new(uid: uid, active: true)
     transaction do
-      user = new(uid: uid, active: true)
-      user.save!
+      new_user.save!
     end
+    new_user
   rescue
     raise ArgumentError, 'ユーザー作成に失敗しました'
   end
@@ -20,7 +21,7 @@ class User < ApplicationRecord
   private
 
   def default_account
-    account = accounts.build(payment_method: PaymentMethod.default, active: true)
+    account = accounts.build(payment_method: PaymentMethod.find(99), active: true)
     account.save!
   end
 
