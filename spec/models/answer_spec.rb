@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+
+  before do
+    FactoryBot.create(:payment_method, key:'free')
+  end
+
   it "question, answer, correctがある場合、有効" do
     answer = FactoryBot.build(:answer)
     expect(answer).to be_valid
@@ -26,7 +31,7 @@ RSpec.describe Answer, type: :model do
     expect(correct_answer2.errors[:correct]).to include("この問題には既に正答が存在しています")
   end
 
-  it "同じquestionでcorrect=trueのレコードが2つ以上ある場合、有効" do
+  it "同じquestionでcorrect=falseのレコードが2つ以上の場合、有効" do
     question = FactoryBot.create(:question)
     correct_answer1 = FactoryBot.create(:correct_answer, question: question)
     dummy_answer1 = FactoryBot.create(:dummy_answer, question: question)

@@ -21,7 +21,7 @@ class User < ApplicationRecord
   private
 
   def default_account
-    account = accounts.build(payment_method: PaymentMethod.find(99), active: true)
+    account = accounts.build(payment_method: PaymentMethod.default, active: true)
     account.save!
   end
 
