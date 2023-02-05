@@ -2,9 +2,13 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate, only: [:create, :my_product]
 
   def create
-    product = Product.create(product_params)
-    @product = Product.find(product.id).product_with_sale
-    render :show
+    product = Product.new(product_params)
+    if product.save
+      @product = Product.find(product.id).product_with_sale
+      render :show
+    else
+      render json: product.errors, status: 400 and return
+    end
   end
 
   def show
