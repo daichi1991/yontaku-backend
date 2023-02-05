@@ -15,7 +15,7 @@ class User < ApplicationRecord
     end
     new_user
   rescue
-    raise ArgumentError, 'ユーザー作成に失敗しました'
+    raise 'ユーザー作成に失敗しました'
   end
 
   private

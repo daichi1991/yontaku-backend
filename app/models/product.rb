@@ -5,20 +5,25 @@ class Product < ApplicationRecord
 
   has_many :questions
   has_many :sales
-  has_many :published_sales, -> { published_sale }, class_name: 'Sale'
 
   scope :where_user, ->(user) { where(user: user) }
 
   def published_sale
-    published_sales.take
+    sale = Sale.published_sale(self)
+    sale_hash = sale.attributes if sale
   end
 
-  def self.product_with_sale(user)
+  def product_with_sale
+    product = self.attributes
+    product.store('sale', published_sale)
+    return product
+  end
+
+  def self.products_with_sale(user)
     products = where_user(user)
     products_array = products.map(&:attributes)
     products.each_with_index do |product, i|
-      sale = Sale.published_sale.attributes
-      products_array[i].store('sale', sale)
+      products_array[i].store('sale', published_sale)
     end
     return products_array
   end
