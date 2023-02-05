@@ -12,6 +12,7 @@ Rails.application.routes.draw do
           get 'my_products'
         end
       end
+      resources :sales, only: [:create, :show]
     end
   end
 end

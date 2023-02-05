@@ -1,0 +1,1 @@
+json.(@sale, :id, :price, :publish)

@@ -4,7 +4,7 @@ class Api::V1::ProductsController < ApplicationController
   def create
     product = Product.new(product_params)
     if product.save
-      @product = Product.find(product.id).product_with_sale
+      @product = product.product_with_sale
       render :show
     else
       render json: product.errors, status: 400 and return
