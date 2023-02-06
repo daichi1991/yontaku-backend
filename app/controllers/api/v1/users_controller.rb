@@ -13,6 +13,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    @user = current_user
+    begin
+      @user = User.find(params[:id])
+    rescue => e
+      render json: e, status: 400 and return
+    end
   end
 end
