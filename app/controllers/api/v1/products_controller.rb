@@ -12,7 +12,11 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id]).product_with_sale
+    begin
+      @product = Product.find(params[:id]).product_with_sale
+    rescue => e
+      render json: e, status: 400 and return
+    end
   end
 
   def my_products

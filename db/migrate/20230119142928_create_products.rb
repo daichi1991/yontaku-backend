@@ -1,7 +1,7 @@
 class CreateProducts < ActiveRecord::Migration[7.0]
   def change
-    create_table :products do |t|
-      t.references :user, foreign_key: true
+    create_table :products, id: :uuid do |t|
+      t.references :user, type: :uuid, null: false, foreign_key: true
       t.string :name, null: false
       t.text :description, null: true
       t.timestamps

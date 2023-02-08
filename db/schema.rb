@@ -14,9 +14,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "accounts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "payment_method_id"
+  create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "payment_method_id", null: false
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -24,8 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
-  create_table "answers", force: :cascade do |t|
-    t.bigint "question_id"
+  create_table "answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "question_id", null: false
     t.text "answer", null: false
     t.boolean "correct", null: false
     t.datetime "created_at", null: false
@@ -33,33 +33,33 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
-  create_table "carts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "sale_id"
+  create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "sale_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sale_id"], name: "index_carts_on_sale_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "sale_id"
+  create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id", null: false
+    t.uuid "sale_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_orders_on_account_id"
     t.index ["sale_id"], name: "index_orders_on_sale_id"
   end
 
-  create_table "payment_methods", force: :cascade do |t|
+  create_table "payment_methods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "key", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "products", force: :cascade do |t|
-    t.bigint "user_id"
+  create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
     t.string "name", null: false
     t.text "description"
     t.datetime "created_at", null: false
@@ -67,8 +67,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
-  create_table "questions", force: :cascade do |t|
-    t.bigint "product_id"
+  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "product_id", null: false
     t.integer "number", null: false
     t.text "question", null: false
     t.datetime "created_at", null: false
@@ -76,8 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
     t.index ["product_id"], name: "index_questions_on_product_id"
   end
 
-  create_table "sales", force: :cascade do |t|
-    t.bigint "product_id"
+  create_table "sales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "product_id", null: false
     t.decimal "price", precision: 10, scale: 2
     t.boolean "publish", null: false
     t.datetime "created_at", null: false
@@ -85,7 +85,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
     t.index ["product_id"], name: "index_sales_on_product_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "uid", null: false
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
