@@ -11,7 +11,11 @@ class Api::V1::SalesController < ApplicationController
   end
 
   def show
-    @sale = Sale.find(params[:id])
+    begin
+      @sale = Sale.find(params[:id])
+    rescue => e
+      render json: e, status: 400 and return
+    end
   end
   
   private
