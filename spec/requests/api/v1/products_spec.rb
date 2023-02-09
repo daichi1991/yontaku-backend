@@ -26,7 +26,7 @@ RSpec.describe "Api::V1::Products", type: :request do
   end
 
   describe "POST /products" do
-    it "productを新規作成する" do
+    it "新規作成 成功" do
       verify_id_token_default_user_stub
       expect {
         post "/api/v1/products.json", params: 
@@ -38,6 +38,20 @@ RSpec.describe "Api::V1::Products", type: :request do
         }.to_json, headers: headers
       }.to change{Product.count}.by(1)
       expect(response.status).to eq(200)
+    end
+
+    it "nameをブランク 失敗" do
+      verify_id_token_default_user_stub
+      expect {
+        post "/api/v1/products.json", params: 
+        {
+          product: {
+            description: "texttexttext",
+          }
+        }.to_json, headers: headers
+      }.to change{Product.count}.by(0)
+      expect(response.status).to eq(400)
+      expect(response.body).to include("can't be blank")
     end
   end
 

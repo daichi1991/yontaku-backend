@@ -57,7 +57,6 @@ cart = Cart.find_or_create_by(
 
 question = Question.find_or_create_by(
   product: product,
-  number: 1,
   question: 'りんご'
 )
 

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         end
       end
       resources :sales, only: [:create, :show]
+      resources :questions, only: [:create, :show]
     end
   end
 end

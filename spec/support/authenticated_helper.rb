@@ -68,6 +68,10 @@ module AuthenticationHelper
     allow_any_instance_of(ApplicationController).to receive(:verify_id_token).and_return(@payload)
   end
 
+  def verify_id_token_blank_stub
+    allow_any_instance_of(ApplicationController).to receive(:verify_id_token).and_return(nil)
+  end
+
   def current_user_stub
     @current_user = User.find_by(uid: 'abcdefg12345')
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@current_user)

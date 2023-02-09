@@ -6,7 +6,7 @@ class Api::V1::SalesController < ApplicationController
     if @sale.save
       render :show
     else
-      render json: sale.errors, status: 400 and return
+      render json: @sale.errors, status: 400 and return
     end
   end
 

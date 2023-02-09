@@ -27,7 +27,7 @@ RSpec.describe "Api::V1::Sales", type: :request do
   end
 
   describe "POST /sales" do
-    it "productを新規作成する" do
+    it "salesを新規作成する" do
       verify_id_token_default_user_stub
       product_id = Product.last.id
       expect {
@@ -41,6 +41,21 @@ RSpec.describe "Api::V1::Sales", type: :request do
         }.to_json, headers: headers
       }.to change{Sale.count}.by(1)
       expect(response.status).to eq(200)
+    end
+
+    it "パラメータ不足で新規作成失敗する" do
+      verify_id_token_default_user_stub
+      product_id = Product.last.id
+      expect {
+        post "/api/v1/sales.json", params: 
+        {
+          sale: {
+            product_id: product_id,
+            publish: true
+          }
+        }.to_json, headers: headers
+      }.to change{Sale.count}.by(0)
+      expect(response.status).to eq(400)
     end
   end
 

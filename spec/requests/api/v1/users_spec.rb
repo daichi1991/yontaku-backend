@@ -34,5 +34,19 @@ RSpec.describe "Api::V1::Users", type: :request do
       }.to change{User.count}.by(1)
       expect(response.status).to eq(200)
     end
+
+    it "不正なtokenで新規作成を失敗する" do
+      verify_id_token_blank_stub
+      expect {
+        post "/api/v1/users.json", headers: headers
+      }.to raise_error(ArgumentError, "BadRequest Parameter")
+    end
+
+    it "既に存在しているユーザー新規作成で失敗する" do
+      verify_id_token_default_user_stub
+      expect {
+        post "/api/v1/users.json", headers: headers
+      }.to raise_error(ArgumentError, "既に存在しているユーザーです")
+    end
   end
 end
