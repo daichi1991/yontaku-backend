@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       end
       resources :sales, only: [:create, :show]
       resources :questions, only: [:create, :show]
+      resources :answers, only: [:create, :show]
     end
   end
 end
