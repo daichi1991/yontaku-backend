@@ -5,9 +5,14 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-payment_method = PaymentMethod.find_or_create_by(
+payment_method1 = PaymentMethod.find_or_create_by(
   key: 'free',
   name: 'フリー'
+)
+
+payment_method2 = PaymentMethod.find_or_create_by(
+  key: 'paypal',
+  name: 'ペイパル'
 )
 
 user = User.find_or_create_by(
@@ -41,7 +46,7 @@ sale3 = Sale.find_or_create_by(
 
 account = Account.find_or_create_by(
   user: user,
-  payment_method: payment_method,
+  payment_method: payment_method1,
   active: true
 )
 

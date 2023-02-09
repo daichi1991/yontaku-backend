@@ -6,7 +6,7 @@ module AuthenticationHelper
 
   def verify_id_token_stub
     @payload = {
-      "uid"=>"dIDmLB7njIObdkEREM9XRpdcamZ2",
+      "uid"=>"vwxyz12345",
       "decoded_token"=>{
         :payload=>{
           "iss"=>"https://securetoken.google.com/hoge",
