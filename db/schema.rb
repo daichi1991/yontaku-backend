@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_12_065143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
     t.index ["product_id"], name: "index_sales_on_product_id"
   end
 
+  create_table "studies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "product_id", null: false
+    t.integer "mode", limit: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_studies_on_product_id"
+    t.index ["user_id"], name: "index_studies_on_user_id"
+  end
+
+  create_table "study_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "study_id", null: false
+    t.uuid "question_id", null: false
+    t.uuid "answer_id"
+    t.boolean "skip", null: false
+    t.integer "required_milliseconds", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_study_details_on_answer_id"
+    t.index ["question_id"], name: "index_study_details_on_question_id"
+    t.index ["study_id"], name: "index_study_details_on_study_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "uid", null: false
     t.boolean "active", default: true, null: false
@@ -101,4 +124,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_052217) do
   add_foreign_key "products", "users"
   add_foreign_key "questions", "products"
   add_foreign_key "sales", "products"
+  add_foreign_key "studies", "products"
+  add_foreign_key "studies", "users"
+  add_foreign_key "study_details", "answers"
+  add_foreign_key "study_details", "questions"
+  add_foreign_key "study_details", "studies"
 end
