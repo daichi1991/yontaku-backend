@@ -20,6 +20,14 @@ Rails.application.routes.draw do
       resources :sales, only: [:create, :show]
       resources :questions, only: [:create, :show]
       resources :answers, only: [:create, :show]
+      resources :studies, only: [:create, :show] do
+        collection do
+          post 'create_study_detail'
+        end
+        member do
+          get 'result'
+        end
+      end
     end
   end
 end

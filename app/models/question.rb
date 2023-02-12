@@ -4,4 +4,8 @@ class Question < ApplicationRecord
 
   belongs_to :product, foreign_key: "product_id"
   has_many :answers
+
+  def correct_answer
+    Answer.find_by(question: self, correct: true)
+  end
 end
