@@ -2,7 +2,7 @@ class Api::V1::StudiesController < ApplicationController
   before_action :authenticate, only: [:create]
 
   def create
-    @study = Study.new(study_params)
+    @study = Study.new(product_id: study_params["product_id"], mode:  study_params["mode"], user_id: @current_user.id)
     if @study.save
       render :show
     else
@@ -18,8 +18,8 @@ class Api::V1::StudiesController < ApplicationController
       study_details.each do |study_detail|
         study_detail.save
       end
-      @study = Study.find_result(study.id)
-      render :show
+      @result = Study.find_result(study.id)
+      render :result
     rescue => e
       render json: e, status: 400 and return
     end
