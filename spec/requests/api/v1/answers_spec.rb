@@ -28,11 +28,12 @@ RSpec.describe "Api::V1::Answers", type: :request do
   describe "POST /answers" do
     it "新規作成 成功" do
       verify_id_token_default_user_stub
+      question = FactoryBot.create(:question)
       expect {
         post "/api/v1/answers.json", params: 
         {
           answer: {
-            question_id: Question.last.id,
+            question_id: question.id,
             answer: "texttexttext",
             correct: true
           }

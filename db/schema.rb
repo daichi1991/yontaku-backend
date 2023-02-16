@@ -100,6 +100,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_065143) do
     t.uuid "answer_id"
     t.boolean "skip", null: false
     t.integer "required_milliseconds", null: false
+    t.boolean "score_target", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["answer_id"], name: "index_study_details_on_answer_id"

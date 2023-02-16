@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         end
         member do
           get 'result'
+          get 'memory_score'
         end
       end
     end

@@ -60,31 +60,60 @@ cart = Cart.find_or_create_by(
   sale: sale3
 )
 
-question = Question.find_or_create_by(
+question1 = Question.find_or_create_by(
   product: product,
   question: 'りんご'
 )
 
-answer1 = Answer.find_or_create_by(
-  question: question,
+answer1_1 = Answer.find_or_create_by(
+  question: question1,
   answer: 'apple',
   correct: true
 )
 
-answer2 = Answer.find_or_create_by(
-  question: question,
+answer1_2 = Answer.find_or_create_by(
+  question: question1,
   answer: 'orange',
   correct: false
 )
 
-answer3 = Answer.find_or_create_by(
-  question: question,
+answer1_3 = Answer.find_or_create_by(
+  question: question1,
   answer: 'grape',
   correct: false
 )
 
-answer4 = Answer.find_or_create_by(
-  question: question,
+answer1_4 = Answer.find_or_create_by(
+  question: question1,
   answer: 'strawberry',
+  correct: false
+)
+
+question2 = Question.find_or_create_by(
+  product: product,
+  question: '勉強'
+)
+
+answer1_1 = Answer.find_or_create_by(
+  question: question2,
+  answer: 'study',
+  correct: true
+)
+
+answer1_2 = Answer.find_or_create_by(
+  question: question2,
+  answer: 'work',
+  correct: false
+)
+
+answer1_3 = Answer.find_or_create_by(
+  question: question2,
+  answer: 'walk',
+  correct: false
+)
+
+answer1_4 = Answer.find_or_create_by(
+  question: question2,
+  answer: 'run',
   correct: false
 )

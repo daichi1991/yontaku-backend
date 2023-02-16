@@ -35,10 +35,47 @@ class Study < ApplicationRecord
     end
 
     result.store('details', study_detail_hash)
-    
-    # binding.pry
-    
     return result
-
   end
+
+  def memory_score
+    ratio = [40, 30, 20, 10]
+    product_id = product.id
+
+    study_details = StudyDetail.joins(:study, :question)
+              .where(studies: { user_id: user.id }, questions: { product_id: product_id })
+              .order('study_details.created_at desc')
+
+    results = []
+    study_details.map do |study_detail|
+      question = study_detail.question
+      answer = study_detail.answer
+      correct_answer = question.correct_answer
+      correctness = answer == correct_answer
+      same_question_index = results.find_index { |h| h[:question].id == question.id} if results != nil
+      
+      if same_question_index
+        target_correctness = results[same_question_index][:correctness]
+        target_correctness.push(correctness) if target_correctness.size < ratio.size
+      else
+        results.push(
+          {
+            question: question,
+            correctness: [correctness]
+          }
+        )
+      end
+    end
+
+    results.each_with_index do |result, index|
+      score = 0
+      result[:correctness].each_with_index do |correctness, c_index|
+        score += ratio[c_index] if correctness == true
+      end
+      results[index][:score] = score
+    end
+
+    results
+  end
+
 end

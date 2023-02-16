@@ -10,6 +10,10 @@ class Api::V1::StudiesController < ApplicationController
     end
   end
 
+  def memory_score
+    @memory_score = Study.find(params[:id]).memory_score
+  end
+
   def create_study_detail
     begin
       study = Study.find(study_params["id"])
@@ -43,6 +47,6 @@ class Api::V1::StudiesController < ApplicationController
   
   private
   def study_params
-    params.require(:study).permit(:id, :product_id, :mode, study_detail:[:id, :question_id, :answer_id, :skip, :required_milliseconds]).merge(user: @current_user)
+    params.require(:study).permit(:id, :product_id, :mode, :number_of_question, study_detail:[:id, :question_id, :answer_id, :skip, :required_milliseconds]).merge(user: @current_user)
   end
 end

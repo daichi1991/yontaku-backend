@@ -4,6 +4,6 @@ FactoryBot.define do
     association :question
     association :answer
     skip {false}
-    required_milliseconds {Faker::Number.number(digits: 10)}
+    required_milliseconds {Faker::Number.number(digits: 5)}
   end
 end
