@@ -43,7 +43,7 @@ class Study < ApplicationRecord
     product_id = product.id
 
     study_details = StudyDetail.joins(:study, :question)
-              .where(studies: { user_id: user.id }, questions: { product_id: product_id })
+              .where(studies: { user_id: user.id }, questions: { product_id: product_id }, study_details: {score_target: true})
               .order('study_details.created_at desc')
 
     results = []

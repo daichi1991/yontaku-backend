@@ -11,7 +11,7 @@ class Api::V1::StudiesController < ApplicationController
   end
 
   def memory_score
-    @memory_score = Study.find(params[:id]).memory_score
+    @memory_scores = Study.find(params[:id]).memory_score
   end
 
   def create_study_detail
