@@ -78,4 +78,20 @@ class Study < ApplicationRecord
     results
   end
 
+  def select_questions(question_count)
+    question_count_integer = question_count.to_i
+    random_question_count = (question_count_integer / 5).floor
+    normal_question_count = question_count_integer - random_question_count
+
+    select_questions = memory_score
+    select_questions.sort{|a, b| a[:score] <=> b[:score]}
+    binding.pry
+    random_questions = select_questions.slice(normal_question_count, select_questions.size - 1)
+    select_questions.slice!(normal_question_count, select_questions.size - 1)
+    random_questions.shuffle!.sort{|a, b| a[:score] <=> b[:score]}
+    random_questions.slice!(random_question_count, random_questions.size - 1)
+    select_questions.concat(random_questions)
+    select_questions.shuffle!
+  end
+
 end
