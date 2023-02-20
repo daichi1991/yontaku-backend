@@ -1,4 +1,5 @@
 class Sale < ApplicationRecord
+  validates :product, presence: true 
   validates :price, presence: true
   validates :publish, inclusion: {in: [true, false]}
 
