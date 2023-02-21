@@ -3,7 +3,7 @@ class Api::V1::AccountsController < ApplicationController
 
   def create
     @account = Account.new(account_params)
-    if @account .save
+    if @account.save
       render :show
     else
       render json: @account.errors, status: 400 and return
