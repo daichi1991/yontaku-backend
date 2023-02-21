@@ -41,6 +41,50 @@ RSpec.describe Order, type: :model do
         order = FactoryBot.build(:order, account: account, sale: sale)
         expect(order).to be_valid
     end
+
+    it "saleがpublish==falseの場合 無効" do
+        user1 = FactoryBot.create(:user)
+        user2 = FactoryBot.create(:user)
+        account = FactoryBot.create(:account, user: user1)
+        product = FactoryBot.create(:product, user: user2)
+        sale = FactoryBot.create(:sale, product: product, publish: false)
+        order = FactoryBot.build(:order, account: account, sale: sale)
+        order.valid?
+        expect(order.errors[:sale]).to include("販売情報が現在未公開のため購入することができません")
+    end
+
+    it "saleがpublish==trueの場合 無効" do
+        user1 = FactoryBot.create(:user)
+        user2 = FactoryBot.create(:user)
+        account = FactoryBot.create(:account, user: user1)
+        product = FactoryBot.create(:product, user: user2)
+        sale = FactoryBot.create(:sale, product: product, publish: true)
+        order = FactoryBot.build(:order, account: account, sale: sale)
+        expect(order).to be_valid
+    end
+
+    it "saleが最新でない場合 無効" do
+        user1 = FactoryBot.create(:user)
+        user2 = FactoryBot.create(:user)
+        account = FactoryBot.create(:account, user: user1)
+        product = FactoryBot.create(:product, user: user2)
+        sale1 = FactoryBot.create(:sale, product: product, publish: true)
+        sale2 = FactoryBot.create(:sale, product: product, publish: true)
+        order = FactoryBot.build(:order, account: account, sale: sale1)
+        order.valid?
+        expect(order.errors[:sale]).to include("最新の販売情報でないため購入することができません")
+    end
+
+    it "saleがの場合 有効" do
+        user1 = FactoryBot.create(:user)
+        user2 = FactoryBot.create(:user)
+        account = FactoryBot.create(:account, user: user1)
+        product = FactoryBot.create(:product, user: user2)
+        sale1 = FactoryBot.create(:sale, product: product, publish: true)
+        sale2 = FactoryBot.create(:sale, product: product, publish: true)
+        order = FactoryBot.build(:order, account: account, sale: sale2)
+        expect(order).to be_valid
+    end
   end
 
 end

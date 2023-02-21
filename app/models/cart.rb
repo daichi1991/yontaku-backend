@@ -9,7 +9,9 @@ class Cart < ApplicationRecord
   belongs_to :sale, foreign_key: "sale_id"
 
   def forbid_own_product
-    return if self.sale != nil && self.sale.product != nil && self.user != self.sale.product.user
+    return if self.sale == nil
+    return if self.sale.product == nil
+    return if self.user != self.sale.product.user
     errors.add(:user, '自分で作った商品をカートに入れることはできません')
   end
 
@@ -19,7 +21,9 @@ class Cart < ApplicationRecord
   end
 
   def forbid_same_product
-    return if self.sale != nil && self.sale.product != nil && Cart.includes(:sale).where(carts: {user: self.user}, sales: {product: self.sale.product}).count == 0
+    return if self.sale == nil
+    return if self.sale.product == nil
+    return if Cart.includes(:sale).where(carts: {user: self.user}, sales: {product: self.sale.product}).count == 0
     errors.add(:base, '同じ商品をカートに入れることはできません')
   end
 end
