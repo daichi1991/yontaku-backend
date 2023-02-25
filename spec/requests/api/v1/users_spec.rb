@@ -49,4 +49,15 @@ RSpec.describe "Api::V1::Users", type: :request do
       }.to raise_error(ArgumentError, "既に存在しているユーザーです")
     end
   end
+
+  describe "GET /users/current_user_infrmation" do
+    it "自分の情報を取得する" do
+      verify_id_token_default_user_stub
+      current_user = User.find_by(uid: "abcdefg12345")
+      get "/api/v1/users/current_user_infrmation.json", headers: headers
+      expect(response.status).to eq(200)
+      json = JSON.parse(response.body)
+      expect(json["id"]).to eq current_user.id
+    end
+  end
 end

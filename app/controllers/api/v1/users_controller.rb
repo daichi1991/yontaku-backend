@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   include FirebaseUtils
 
-  before_action :authenticate, only: :show
+  before_action :authenticate, only: [:show, :current_user_infrmation]
 
   def create
     payload = verify_id_token(request.headers["Authorization"]&.split&.last)
@@ -17,6 +17,15 @@ class Api::V1::UsersController < ApplicationController
       @user = User.find(params[:id])
     rescue => e
       render json: e, status: 400 and return
+    end
+  end
+
+  def current_user_infrmation
+    @user = @current_user
+    if @user
+      render :show
+    else
+      render status: 400, json: { status: 400, message: 'Bad Request' }
     end
   end
 end

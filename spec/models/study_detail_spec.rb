@@ -24,10 +24,26 @@ RSpec.describe StudyDetail, type: :model do
       expect(study_detail.errors[:question]).to include("must exist")
     end
 
-    it "answerが無い 無効" do
-      study_detail = FactoryBot.build(:study_detail, answer: nil)
+    it "skip==true answer==nil 有効" do
+      study_detail = FactoryBot.build(:study_detail, skip: true, answer: nil)
+      expect(study_detail).to be_valid
+    end
+
+    it "skip==true answer==値がある 無効" do
+      study_detail = FactoryBot.build(:study_detail, skip: true)
       study_detail.valid?
-      expect(study_detail.errors[:answer]).to include("must exist")
+      expect(study_detail.errors[:answer]).to include("skip==trueにも関わらずAnswerに値があります")
+    end
+
+    it "skip==false answer==nil 無効" do
+      study_detail = FactoryBot.build(:study_detail, skip: false, answer: nil)
+      study_detail.valid?
+      expect(study_detail.errors[:answer]).to include("skip==fakseにも関わらずAnswerに値がありません")
+    end
+
+    it "skip==false answer==値がある 有効" do
+      study_detail = FactoryBot.build(:study_detail, skip: false)
+      expect(study_detail).to be_valid
     end
 
     it "skipが無い 無効" do

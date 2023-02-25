@@ -6,7 +6,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:create, :show]
+      resources :users, only: [:create, :show] do
+        collection do
+          get 'current_user_infrmation'
+        end
+      end
       resources :accounts, only: [:create, :show] do
         collection do
           get 'my_accounts'
@@ -28,6 +32,12 @@ Rails.application.routes.draw do
           get 'result'
           get 'memory_score'
           get 'select_questions'
+        end
+      end
+      resources :study_details, only: [:show]
+      resources :carts, only: [:create] do
+        collection do
+          get 'current_user_cart'
         end
       end
     end

@@ -85,7 +85,6 @@ class Study < ApplicationRecord
 
     select_questions = memory_score
     select_questions.sort{|a, b| a[:score] <=> b[:score]}
-    binding.pry
     random_questions = select_questions.slice(normal_question_count, select_questions.size - 1)
     select_questions.slice!(normal_question_count, select_questions.size - 1)
     random_questions.shuffle!.sort{|a, b| a[:score] <=> b[:score]}

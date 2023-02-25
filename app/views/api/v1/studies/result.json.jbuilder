@@ -14,9 +14,12 @@ json.details do
       json.question detail["question"].question
     end
     json.answer do
-      json.id detail["answer"].id
-      json.answer detail["answer"].answer
-      json.correct detail["answer"].correct
+      if detail["answer"]
+        json.id detail["answer"].id
+        json.answer detail["answer"].answer
+        json.correct detail["answer"].correct
+      end
+        json.answer nil
     end
     json.correct_answer do
       json.id detail["correct_answer"].id
