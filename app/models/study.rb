@@ -27,7 +27,6 @@ class Study < ApplicationRecord
       answer = study_detail.answer
       details.store('answer', answer)
 
-      # correct_answer = Answer.find_by(question: study_detail.question, correct: true)
       correct_answer = study_detail.question.correct_answer
       details.store('correct_answer', correct_answer)
 
@@ -35,6 +34,7 @@ class Study < ApplicationRecord
     end
 
     result.store('details', study_detail_hash)
+
     return result
   end
 
@@ -74,7 +74,6 @@ class Study < ApplicationRecord
       end
       results[index][:score] = score
     end
-
     results
   end
 

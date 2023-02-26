@@ -124,7 +124,7 @@ question3 = Question.find_or_create_by(
 )
 
 answer3_1 = Answer.find_or_create_by(
-  question: question2,
+  question: question3,
   answer: 'phone',
   correct: true
 )

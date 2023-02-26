@@ -73,7 +73,7 @@ RSpec.describe "Api::V1::Studies", type: :request do
       questions.each_with_index do |question, index|
         study_detail = {
           question_id: question.id,
-          answer_id: skips[index] ? nil : answers[rand(index..index+3)].id,
+          answer_id: skips[index] ? nil : answers[rand(index*4..index*4+3)].id,
           skip: skips[index],
           required_milliseconds: rand(1..999)
         }
@@ -109,7 +109,7 @@ RSpec.describe "Api::V1::Studies", type: :request do
       questions.each_with_index do |question, index|
         study_detail = {
           question_id: question.id,
-          answer_id: answers[rand(index..index+3)].id,
+          answer_id: answers[rand(index*4..index*4+3)].id,
           skip: skips,
           required_milliseconds: rand(1..999)
         }
