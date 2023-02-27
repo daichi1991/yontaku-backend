@@ -2,11 +2,12 @@ class Api::V1::CartsController < ApplicationController
   before_action :authenticate, only: [:create, :current_user_cart]
 
   def create
-    @cart = Cart.new(cart_params)
-    if @cart.save
-      render :show
+    cart = Cart.new(cart_params)
+    if cart.save
+      @carts = Cart.where(user: @current_user)
+      render :current_user_cart
     else
-      render json: @cart.errors, status: 400 and return
+      render json: cart.errors, status: 400 and return
     end
   end
 
