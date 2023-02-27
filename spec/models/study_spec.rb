@@ -139,4 +139,31 @@ RSpec.describe Study, type: :model do
       expect(results[9][:score]).to eq 0
     end
   end
+
+  describe "select_questions" do
+    it "有効" do
+      answers = []
+      questions.each do |question|
+        answers.push(FactoryBot.create(:answer, question: question, correct: true))
+        3.times do
+          answers.push(FactoryBot.create(:answer, question: question, correct: false))
+        end
+      end
+      skips = [true, true, true, true, true, false, false, false, false, false]
+      4.times do
+        questions.each_with_index do |question, index|
+          study_detail = FactoryBot.create(:study_detail,
+            study: study,
+            question: question,
+            answer_id: skips[index] ? nil : answers[index*4].id,
+            skip: skips[index],
+            required_milliseconds: rand(1..999)
+          )
+        end
+      end
+
+      select_questions = study.select_questions(5)
+      expect(select_questions.count).to eq 5
+    end
+  end
 end
