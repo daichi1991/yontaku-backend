@@ -40,6 +40,7 @@ Rails.application.routes.draw do
           get 'current_user_cart'
         end
       end
+      resources :orders, only: [:create]
     end
   end
 end
