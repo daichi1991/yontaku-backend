@@ -4,7 +4,7 @@ class Api::V1::OrdersController < ApplicationController
   before_action :authenticate, only: [:create]
 
   def create
-    raise Forbidden unless Account.find(order_params[:account_id]).user == @current_user
+    raise BadRequest, "不正なユーザーアクセスです" unless Account.find(order_params[:account_id]).user == @current_user
     orders = []
     Order.transaction do
       order_params[:sales].each do |sale|
@@ -13,7 +13,7 @@ class Api::V1::OrdersController < ApplicationController
         orders.push(order)
       end
     end
-    render json: orders, status: 201 and return
+    render json: orders, status: 200 and return
     rescue => e
       render json: e, status: 400 and return
   end
