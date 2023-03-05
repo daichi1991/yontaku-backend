@@ -1,5 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
   before_action :authenticate, only: [:create, :my_products]
+  before_action :set_q, only: [:search]
 
   def create
     product = Product.new(product_params)
@@ -19,11 +20,22 @@ class Api::V1::ProductsController < ApplicationController
     end
   end
 
+  def search
+    @results = @q
+    render :results
+  end
+
   def my_products
-    @my_products = Product.my_products(@current_user)
+    @results = Product.my_products(@current_user)
+    render :results
   end
 
   private
+  def set_q
+    q = Product.search(params[:q])
+    @q = Product.products_with_sale(q)
+  end
+
   def product_params
     params.require(:product).permit(:name, :description).merge(user: @current_user)
   end

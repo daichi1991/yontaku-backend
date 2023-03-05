@@ -39,4 +39,13 @@ class Product < ApplicationRecord
     end
   end
 
+  def self.search(query)
+    keywords = query.split(/[\p{blank}\s]+/)
+    grouping_hash = keywords.reduce({}){|hash, word| hash.merge(word => { name_cont: word, description_cont: word ,m: "or"})}
+    ransack({ combinator: 'and', groupings: grouping_hash}).result
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "description", "id", "name", "updated_at", "user_id"]
+  end
 end

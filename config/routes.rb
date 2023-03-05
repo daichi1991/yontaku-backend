@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
       resources :products, only: [:create, :show] do
         collection do
+          get 'search'
           get 'my_products'
         end
       end

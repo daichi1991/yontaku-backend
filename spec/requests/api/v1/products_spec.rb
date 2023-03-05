@@ -65,4 +65,102 @@ RSpec.describe "Api::V1::Products", type: :request do
       expect(json[0]["name"]).to eq "my_product"
     end
   end
+
+  describe "GET /products/search" do
+    before do
+      Product.last.destroy
+    end
+    context "1レコード" do
+      it "nameで検索" do
+        FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
+        query = "pro"
+        get "/api/v1/products/search.json?q=#{query}", headers: headers
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json[0]["name"]).to eq "my_product"
+      end
+
+      it "descriptionで検索" do
+        FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
+        query = "great"
+        get "/api/v1/products/search.json?q=#{query}", headers: headers
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json[0]["name"]).to eq "my_product"
+      end
+
+      it "存在しないキーワードで検索" do
+        FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
+        query = "test"
+        get "/api/v1/products/search.json?q=#{query}", headers: headers
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json).to eq []
+      end
+    end
+
+    context "複数レコードから検索" do
+      before do
+        FactoryBot.create(:product, name: "first", description: "great learning test", user: User.find_by(uid: "abcdefg12345"))
+        FactoryBot.create(:product, name: "second", description: "great product test", user: User.find_by(uid: "abcdefg12345"))
+        FactoryBot.create(:product, name: "third", description: "good memory for you", user: User.find_by(uid: "abcdefg12345"))
+      end
+      context "キーワード一つ" do
+        it "0レコードヒット" do
+          query = "zero"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json).to eq []
+        end
+
+        it "1レコードヒット" do
+          query = "first"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]).to eq nil
+        end
+
+        it "2レコードヒット" do
+          query = "great"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]["name"]).to eq "second"
+        end
+      end
+
+      context "複数キーワード" do
+        it "0レコードヒット" do
+          query = "first second"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json).to eq []
+        end
+
+        it "1レコードヒット" do
+          query = "first great"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]).to eq nil
+        end
+
+        it "2レコードヒット" do
+          query = "great test"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]["name"]).to eq "second"
+          expect(json[2]).to eq nil
+        end
+      end
+    end
+  end
 end
