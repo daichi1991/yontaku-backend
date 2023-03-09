@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   validates :name, presence: true
 
   belongs_to :user, foreign_key: "user_id"
+  belongs_to :subject, foreign_key: "subject_id"
 
   has_many :questions
   has_many :sales

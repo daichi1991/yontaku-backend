@@ -4,6 +4,7 @@ RSpec.describe "Api::V1::Products", type: :request do
   before do
     FactoryBot.create(:payment_method, key:'free')
     FactoryBot.create(:user, uid:'abcdefg12345')
+    FactoryBot.create(:subject)
     FactoryBot.create(:product)
   end
   let(:headers) { { CONTENT_TYPE: 'application/json', Authorization: 'hoge_token' } }
@@ -28,10 +29,12 @@ RSpec.describe "Api::V1::Products", type: :request do
   describe "POST /products" do
     it "新規作成 成功" do
       verify_id_token_default_user_stub
+      subject = Subject.last
       expect {
         post "/api/v1/products.json", params: 
         {
           product: {
+            subject_id: subject.id,
             name: "product_name",
             description: "texttexttext",
           }

@@ -20,8 +20,34 @@ user = User.find_or_create_by(
   active: true
 )
 
+subject_english = Subject.find_or_create_by(
+  key: 'english',
+  name: '英語'
+)
+
+subject_world_history = Subject.find_or_create_by(
+  key: 'world_history',
+  name: '世界史'
+)
+
+subject_japanese_history = Subject.find_or_create_by(
+  key: 'japanese_history',
+  name: '日本史'
+)
+
+subject_mathematics = Subject.find_or_create_by(
+  key: 'mathematics',
+  name: '数学'
+)
+
+subject_physics = Subject.find_or_create_by(
+  key: 'physics',
+  name: '物理'
+)
+
 product = Product.find_or_create_by(
   user: user,
+  subject: subject_english,
   name: '難関私立文系英単語100',
   description: '最難関私立文系を目指すならマストの英単語を収録！'
 )

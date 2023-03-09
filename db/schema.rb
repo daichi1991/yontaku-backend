@@ -60,10 +60,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_065143) do
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
+    t.uuid "subject_id"
     t.string "name", null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["subject_id"], name: "index_products_on_subject_id"
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
@@ -108,6 +110,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_065143) do
     t.index ["study_id"], name: "index_study_details_on_study_id"
   end
 
+  create_table "subjects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "uid", null: false
     t.boolean "active", default: true, null: false
@@ -122,6 +131,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_065143) do
   add_foreign_key "carts", "users"
   add_foreign_key "orders", "accounts"
   add_foreign_key "orders", "sales"
+  add_foreign_key "products", "subjects"
   add_foreign_key "products", "users"
   add_foreign_key "questions", "products"
   add_foreign_key "sales", "products"

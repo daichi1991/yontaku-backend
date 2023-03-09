@@ -37,6 +37,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description).merge(user: @current_user)
+    params.require(:product).permit(:subject_id, :name, :description).merge(user: @current_user)
   end
 end
