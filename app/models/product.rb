@@ -7,6 +7,7 @@ class Product < ApplicationRecord
 
   has_many :questions
   has_many :sales
+  has_many :product_tags
 
   scope :where_user, ->(user) { where(user: user) }
 
