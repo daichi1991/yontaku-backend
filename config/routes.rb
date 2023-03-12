@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       resources :orders, only: [:create]
       resources :tags, only: [:create]
       resources :product_tags, only: [:create]
+      resources :subjects, only: [:index, :create, :update]
     end
   end
 end
