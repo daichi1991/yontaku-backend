@@ -1,9 +1,7 @@
 class Api::V1::SubjectsController < ApplicationController
-  before_action :authenticate, only: [:create, :update]
-
   def index
-    @subject = Subject.all
-    render json: @subject, status: 200 and return
+    @subjects = Subject.all
+    render :index
   end
 
   def create
