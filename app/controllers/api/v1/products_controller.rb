@@ -25,6 +25,13 @@ class Api::V1::ProductsController < ApplicationController
     render :results
   end
 
+  def search_by_subject
+    subject = Subject.find_by(key: params[:subject])
+    products = Product.where(subject: subject)
+    @results = Product.published_products(products)
+    render :results
+  end
+
   def my_products
     @results = Product.my_products(@current_user)
     render :results
@@ -33,7 +40,7 @@ class Api::V1::ProductsController < ApplicationController
   private
   def set_q
     q = Product.search(params[:q])
-    @q = Product.products_with_sale(q)
+    @q = Product.published_products(q)
   end
 
   def product_params

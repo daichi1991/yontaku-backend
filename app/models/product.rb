@@ -35,7 +35,8 @@ class Product < ApplicationRecord
     products_array = products_with_sale(products)
   end
 
-  def self.published_products(products_array)
+  def self.published_products(products)
+    products_array = products_with_sale(products)
     published_products = products_array.select do |product|
       product["sale"] && product["sale"]["publish"] == true
     end

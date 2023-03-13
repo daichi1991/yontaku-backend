@@ -74,8 +74,11 @@ RSpec.describe "Api::V1::Products", type: :request do
       Product.last.destroy
     end
     context "1レコード" do
+      before do
+        product = FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
+        FactoryBot.create(:sale, product: product, publish: true)
+      end
       it "nameで検索" do
-        FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
         query = "pro"
         get "/api/v1/products/search.json?q=#{query}", headers: headers
         expect(response.status).to eq(200)
@@ -84,7 +87,6 @@ RSpec.describe "Api::V1::Products", type: :request do
       end
 
       it "descriptionで検索" do
-        FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
         query = "great"
         get "/api/v1/products/search.json?q=#{query}", headers: headers
         expect(response.status).to eq(200)
@@ -93,7 +95,6 @@ RSpec.describe "Api::V1::Products", type: :request do
       end
 
       it "存在しないキーワードで検索" do
-        FactoryBot.create(:product, name: "my_product", description: "great learning", user: User.find_by(uid: "abcdefg12345"))
         query = "test"
         get "/api/v1/products/search.json?q=#{query}", headers: headers
         expect(response.status).to eq(200)
@@ -104,9 +105,12 @@ RSpec.describe "Api::V1::Products", type: :request do
 
     context "複数レコードから検索" do
       before do
-        FactoryBot.create(:product, name: "first", description: "great learning test", user: User.find_by(uid: "abcdefg12345"))
-        FactoryBot.create(:product, name: "second", description: "great product test", user: User.find_by(uid: "abcdefg12345"))
-        FactoryBot.create(:product, name: "third", description: "good memory for you", user: User.find_by(uid: "abcdefg12345"))
+        @product1 = FactoryBot.create(:product, name: "first", description: "great learning test", user: User.find_by(uid: "abcdefg12345"))
+        @product2 = FactoryBot.create(:product, name: "second", description: "great product test", user: User.find_by(uid: "abcdefg12345"))
+        @product3 = FactoryBot.create(:product, name: "third", description: "good memory for you", user: User.find_by(uid: "abcdefg12345"))
+        FactoryBot.create(:sale, product: @product1, publish: true)
+        FactoryBot.create(:sale, product: @product2, publish: true)
+        FactoryBot.create(:sale, product: @product3, publish: true)
       end
       context "キーワード一つ" do
         it "0レコードヒット" do
@@ -163,6 +167,52 @@ RSpec.describe "Api::V1::Products", type: :request do
           expect(json[1]["name"]).to eq "second"
           expect(json[2]).to eq nil
         end
+      end
+
+      context "sale publish" do
+        it "true 1レコードヒット" do
+          FactoryBot.create(:sale, product: @product1, publish: false)
+          query = "great"
+          get "/api/v1/products/search.json?q=#{query}", headers: headers
+          expect(response.status).to eq(200)
+          json = JSON.parse(response.body)
+          expect(json[0]["name"]).to eq "second"
+          expect(json[1]).to eq nil
+        end
+      end
+    end
+  end
+
+  describe "GET /products/search_by_subject" do
+    before do
+      subject1 = FactoryBot.create(:subject, key: 'english')
+      subject2 = FactoryBot.create(:subject, key: 'history')
+      product1_1 = FactoryBot.create(:product, subject: subject1, name: "english_1", user: User.find_by(uid: "abcdefg12345"))
+      product1_2 = FactoryBot.create(:product, subject: subject1, name: "english_2", user: User.find_by(uid: "abcdefg12345"))
+      product2_1 = FactoryBot.create(:product, subject: subject2, name: "history_1", user: User.find_by(uid: "abcdefg12345"))
+      product2_2 = FactoryBot.create(:product, subject: subject2, name: "history_2", user: User.find_by(uid: "abcdefg12345"))
+      FactoryBot.create(:sale, product: product1_1, publish: true)
+      FactoryBot.create(:sale, product: product1_2, publish: true)
+      FactoryBot.create(:sale, product: product2_1, publish: true)
+      FactoryBot.create(:sale, product: product2_2, publish: true)
+    end
+    context "存在するキーワード" do
+      it "english" do
+        query = "english"
+        get "/api/v1/products/search_by_subject.json?subject=#{query}", headers: headers
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json[0]["name"]).to eq "english_1"
+        expect(json[1]["name"]).to eq "english_2"
+      end
+    end
+    context "存在しないキーボード「" do
+      it "notexist" do
+        query = "notexist"
+        get "/api/v1/products/search_by_subject.json?subject=#{query}", headers: headers
+        expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json).to eq []
       end
     end
   end
