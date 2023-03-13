@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_135455) do
     t.uuid "subject_id"
     t.string "name", null: false
     t.text "description"
+    t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subject_id"], name: "index_products_on_subject_id"

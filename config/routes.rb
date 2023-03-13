@@ -16,7 +16,7 @@ Rails.application.routes.draw do
           get 'my_accounts'
         end
       end
-      resources :products, only: [:create, :show] do
+      resources :products, only: [:create, :update, :show] do
         collection do
           get 'search'
           get 'search_by_subject'

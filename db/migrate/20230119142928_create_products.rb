@@ -5,6 +5,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.references :subject, type: :uuid, null: true, foreign_key: true
       t.string :name, null: false
       t.text :description, null: true
+      t.string :image
       t.timestamps
     end
   end

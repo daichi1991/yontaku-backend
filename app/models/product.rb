@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  mount_uploader :image, ImageUploader
   validates :user, presence: true
   validates :name, presence: true
 
