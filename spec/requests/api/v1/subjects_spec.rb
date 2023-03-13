@@ -8,14 +8,7 @@ RSpec.describe "Api::V1::Subjects", type: :request do
     FactoryBot.create_list(:subject, 3)
   end
   let(:headers) { { CONTENT_TYPE: 'application/json', Authorization: 'hoge_token' } }
-
-  after do
-    subjects = Subject.all
-    subjects.each do |subject|
-      dir_name = subject.id
-      FileUtils.rm_rf("public/uploads/subject/image/#{dir_name}")
-    end
-  end
+  
   describe "GET /subjects" do
     it "一覧取得 成功" do
       get "/api/v1/subjects.json"
