@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :products
   has_many :accounts
   has_many :carts
+  has_many :rates
 
   after_create :default_account
 

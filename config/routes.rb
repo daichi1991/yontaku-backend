@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       resources :tags, only: [:create]
       resources :product_tags, only: [:create]
       resources :subjects, only: [:index, :create, :update]
+      resources :rates, only: [:create, :update]
     end
   end
 end
