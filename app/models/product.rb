@@ -13,34 +13,38 @@ class Product < ApplicationRecord
 
   scope :where_user, ->(user) { where(user: user) }
 
-  def last_sale
-    sale = Sale.last_sale(self)
-    sale_hash = sale.attributes if sale
+  def self.last_sale(product)
+    sale = Sale.last_sale(product)
   end
 
-  def product_with_sale
-    product = self.attributes
-    product.store('sale', last_sale)
-    return product
+  def self.product_with_info(product)
+    result = {}
+    result.store('product', product)
+    result.store('sale', last_sale(product))
+    return result
   end
 
-  def self.products_with_sale(products)
-    products_array = products.map(&:attributes)
-    products.each_with_index do |product, i|
-      products_array[i].store('sale', product.last_sale)
+  def self.products_with_info(products)
+    products_array = []
+    
+    products.each do |product|
+      product_hash = product_with_info(product)
+      products_array.push(product_hash)
     end
+
     return products_array
   end
 
   def self.my_products(user)
     products = where_user(user)
-    products_array = products_with_sale(products)
+    products_array = products_with_info(products)
   end
 
   def self.published_products(products)
-    products_array = products_with_sale(products)
+    products_array = products_with_info(products)
+    
     published_products = products_array.select do |product|
-      product["sale"] && product["sale"]["publish"] == true
+      product["sale"] && product["sale"].publish == true
     end
   end
 
