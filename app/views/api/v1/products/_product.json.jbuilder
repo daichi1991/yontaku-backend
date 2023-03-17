@@ -11,3 +11,7 @@ if product["sale"]
 else
   json.sale nil
 end
+json.rate do
+  json.amount product["rate"][:amount]
+  json.socre product["rate"][:score]
+end

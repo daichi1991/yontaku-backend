@@ -21,6 +21,8 @@ class Product < ApplicationRecord
     result = {}
     result.store('product', product)
     result.store('sale', last_sale(product))
+    rate = get_rate(product)
+    result.store('rate', rate)
     return result
   end
 
@@ -56,5 +58,12 @@ class Product < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "name", "updated_at", "user_id"]
+  end
+
+
+  def self.get_rate(product)
+    rate_amount = Rate.amount(product)
+    rate_score = Rate.score(product)
+    return {amount: rate_amount, score: rate_score}
   end
 end

@@ -206,7 +206,7 @@ RSpec.describe "Api::V1::Products", type: :request do
         expect(json["products"][1]["name"]).to eq "english_2"
       end
     end
-    context "存在しないキーボード「" do
+    context "存在しないキーワード" do
       it "notexist" do
         query = "notexist"
         get "/api/v1/products/search_by_subject.json?subject=#{query}", headers: headers
