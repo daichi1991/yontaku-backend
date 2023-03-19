@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   include FirebaseUtils
 
-  before_action :authenticate, only: [:show, :current_user_infrmation]
+  before_action :authenticate, only: [:update, :show, :current_user_infrmation]
 
   def create
     payload = verify_id_token(request.headers["Authorization"]&.split&.last)
@@ -10,6 +10,15 @@ class Api::V1::UsersController < ApplicationController
     raise ArgumentError, '既に存在しているユーザーです' if User.find_by(uid: payload_uid)
     @user = User.create_active_user(payload_uid)
     render :show
+  end
+
+  def update
+    @user = @current_user
+    if @user.update(user_params)
+      render :show
+    else
+      render json: @user.errors, status: 400 and return
+    end
   end
 
   def show
@@ -27,5 +36,10 @@ class Api::V1::UsersController < ApplicationController
     else
       render status: 400, json: { status: 400, message: 'Bad Request' }
     end
+  end
+
+  private
+  def user_params
+    params.require(:user).permit(:username, :image)
   end
 end

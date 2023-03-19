@@ -37,6 +37,31 @@ RSpec.describe User, type: :model do
       user2.valid?
       expect(user2.errors[:uid]).to include("has already been taken")
     end
+
+    context "username" do
+      it "文字数1 OK" do
+        user = FactoryBot.create(:user, uid: 'abcdef12345')
+        user.update(username: 'a')
+        expect(user).to be_valid
+        expect(user[:username]).to eq 'a'
+      end
+
+      it "文字数100 OK" do
+        user = FactoryBot.create(:user, uid: 'abcdef12345')
+        username = 'a' * 100
+        user.update(username: username)
+        expect(user).to be_valid
+        expect(user[:username]).to eq 'a' * 100
+      end
+
+      it "文字数101 NG" do
+        user = FactoryBot.create(:user, uid: 'abcdef12345')
+        username = 'a' * 101
+        user.update(username: username)
+        user.valid?
+        expect(user.errors[:username]).to include("is too long (maximum is 100 characters)")
+      end
+    end
   end
   context 'Accountモデルのチェック' do
     it 'Userが新規作成されたらAccountも新規作成されること' do

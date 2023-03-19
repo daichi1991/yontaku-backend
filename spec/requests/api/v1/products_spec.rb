@@ -15,7 +15,7 @@ RSpec.describe "Api::V1::Products", type: :request do
       get "/api/v1/products/#{product_id}.json"
       expect(response.status).to eq(200)
       json = JSON.parse(response.body)
-      expect(json["product"]["id"]).to eq product_id
+      expect(json["id"]).to eq product_id
     end
 
     it "存在しないidでproduct情報にアクセスして失敗" do
@@ -58,6 +58,40 @@ RSpec.describe "Api::V1::Products", type: :request do
     end
   end
 
+  describe "PUT /products" do
+    it "update 成功" do
+      verify_id_token_default_user_stub
+      product_id = Product.last.id
+      expect {
+        put "/api/v1/products/#{product_id}.json", params: 
+        {
+          product: {
+            name: "updated_product_name",
+            description: "updated_text",
+          }
+        }.to_json, headers: headers
+      }.to change{Product.count}.by(0)
+      expect(response.status).to eq(200)
+      json = JSON.parse(response.body)
+      expect(json["name"]).to eq "updated_product_name"
+    end
+
+    it "nameをブランク 失敗" do
+      verify_id_token_default_user_stub
+      expect {
+        post "/api/v1/products.json", params: 
+        {
+          product: {
+            name: nil,
+          }
+        }.to_json, headers: headers
+      }.to change{Product.count}.by(0)
+      expect(response.status).to eq(400)
+      json = JSON.parse(response.body)
+      expect(json["name"]).to include("can't be blank")
+    end
+  end
+
   describe "GET /products/my_products" do
     it "my_productsを取得する" do
       verify_id_token_default_user_stub
@@ -65,7 +99,7 @@ RSpec.describe "Api::V1::Products", type: :request do
       get "/api/v1/products/my_products.json", headers: headers
       expect(response.status).to eq(200)
       json = JSON.parse(response.body)
-      expect(json["products"][0]["name"]).to eq "my_product"
+      expect(json[0]["name"]).to eq "my_product"
     end
   end
 
@@ -83,7 +117,7 @@ RSpec.describe "Api::V1::Products", type: :request do
         get "/api/v1/products/search.json?q=#{query}", headers: headers
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
-        expect(json["products"][0]["name"]).to eq "my_product"
+        expect(json[0]["name"]).to eq "my_product"
       end
 
       it "descriptionで検索" do
@@ -91,7 +125,7 @@ RSpec.describe "Api::V1::Products", type: :request do
         get "/api/v1/products/search.json?q=#{query}", headers: headers
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
-        expect(json["products"][0]["name"]).to eq "my_product"
+        expect(json[0]["name"]).to eq "my_product"
       end
 
       it "存在しないキーワードで検索" do
@@ -99,7 +133,7 @@ RSpec.describe "Api::V1::Products", type: :request do
         get "/api/v1/products/search.json?q=#{query}", headers: headers
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
-        expect(json).to eq "products"=>[]
+        expect(json).to eq []
       end
     end
 
@@ -118,7 +152,7 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json).to eq "products"=>[]
+          expect(json).to eq []
         end
 
         it "1レコードヒット" do
@@ -126,8 +160,8 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json["products"][0]["name"]).to eq "first"
-          expect(json["products"][1]).to eq nil
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]).to eq nil
         end
 
         it "2レコードヒット" do
@@ -135,8 +169,8 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json["products"][0]["name"]).to eq "first"
-          expect(json["products"][1]["name"]).to eq "second"
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]["name"]).to eq "second"
         end
       end
 
@@ -146,7 +180,7 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json).to eq "products"=>[]
+          expect(json).to eq []
         end
 
         it "1レコードヒット" do
@@ -154,8 +188,8 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json["products"][0]["name"]).to eq "first"
-          expect(json["products"][1]).to eq nil
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]).to eq nil
         end
 
         it "2レコードヒット" do
@@ -163,9 +197,9 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json["products"][0]["name"]).to eq "first"
-          expect(json["products"][1]["name"]).to eq "second"
-          expect(json["products"][2]).to eq nil
+          expect(json[0]["name"]).to eq "first"
+          expect(json[1]["name"]).to eq "second"
+          expect(json[2]).to eq nil
         end
       end
 
@@ -176,8 +210,8 @@ RSpec.describe "Api::V1::Products", type: :request do
           get "/api/v1/products/search.json?q=#{query}", headers: headers
           expect(response.status).to eq(200)
           json = JSON.parse(response.body)
-          expect(json["products"][0]["name"]).to eq "second"
-          expect(json["products"][1]).to eq nil
+          expect(json[0]["name"]).to eq "second"
+          expect(json[1]).to eq nil
         end
       end
     end
@@ -202,8 +236,8 @@ RSpec.describe "Api::V1::Products", type: :request do
         get "/api/v1/products/search_by_subject.json?subject=#{query}", headers: headers
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
-        expect(json["products"][0]["name"]).to eq "english_1"
-        expect(json["products"][1]["name"]).to eq "english_2"
+        expect(json[0]["name"]).to eq "english_1"
+        expect(json[1]["name"]).to eq "english_2"
       end
     end
     context "存在しないキーワード" do
@@ -212,7 +246,7 @@ RSpec.describe "Api::V1::Products", type: :request do
         get "/api/v1/products/search_by_subject.json?subject=#{query}", headers: headers
         expect(response.status).to eq(200)
         json = JSON.parse(response.body)
-        expect(json).to eq "products"=>[]
+        expect(json).to eq []
       end
     end
   end

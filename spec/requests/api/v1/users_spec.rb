@@ -50,6 +50,41 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
+  describe "PUT /users" do
+    it "usernameを上書きする" do
+      verify_id_token_default_user_stub
+      user_id = User.find_by(uid: "abcdefg12345").id
+      expect {
+        put "/api/v1/users/#{user_id}.json", params: 
+        {
+          user: {
+            username: "テストユーザー"
+          }
+        }.to_json, headers: headers
+      }.to change{User.count}.by(0)
+      expect(response.status).to eq(200)
+      json = JSON.parse(response.body)
+      expect(json["username"]).to eq "テストユーザー"
+    end
+
+    it "usernameを不正な値で上書きする" do
+      verify_id_token_default_user_stub
+      user_id = User.find_by(uid: "abcdefg12345").id
+      username = 'a' * 101
+      expect {
+        put "/api/v1/users/#{user_id}.json", params: 
+        {
+          user: {
+            username: username
+          }
+        }.to_json, headers: headers
+      }.to change{User.count}.by(0)
+      expect(response.status).to eq(400)
+      json = JSON.parse(response.body)      
+      expect(json["username"]).to eq ["is too long (maximum is 100 characters)"]
+    end
+  end
+
   describe "GET /users/current_user_infrmation" do
     it "自分の情報を取得する" do
       verify_id_token_default_user_stub

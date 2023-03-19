@@ -1,6 +1,8 @@
 class User < ApplicationRecord
+  mount_uploader :image, ImageUploader
   validates :uid, presence: true, uniqueness: true
   validates :active, inclusion: {in: [true, false]}
+  validates :username, length: {minimum:1, maximum:100}, allow_blank: true
 
   has_many :products
   has_many :accounts

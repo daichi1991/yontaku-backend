@@ -17,7 +17,7 @@ class Api::V1::ProductsController < ApplicationController
     if @product.update(product_params)
       render json: @product, status: 200 and return
     else
-      render json: @product, status: 400 and return
+      render json: @product.errors, status: 400 and return
     end
   end
 

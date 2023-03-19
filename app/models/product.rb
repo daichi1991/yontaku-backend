@@ -23,6 +23,8 @@ class Product < ApplicationRecord
     result.store('sale', last_sale(product))
     rate = get_rate(product)
     result.store('rate', rate)
+    question_amount = question_amount(product)
+    result.store('question_amount', question_amount)
     return result
   end
 
@@ -65,5 +67,9 @@ class Product < ApplicationRecord
     rate_amount = Rate.amount(product)
     rate_score = Rate.score(product)
     return {amount: rate_amount, score: rate_score}
+  end
+
+  def self.question_amount(product)
+    Question.where(product: product).count
   end
 end
