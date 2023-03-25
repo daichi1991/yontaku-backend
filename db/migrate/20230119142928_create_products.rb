@@ -6,6 +6,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :name, null: false
       t.text :description, null: true
       t.string :image
+      t.string :default_key, null: true, unique: true
       t.timestamps
     end
   end

@@ -1045,3 +1045,5 @@ study_detail6_12 = StudyDetail.create(
   skip: false,
   required_milliseconds: 1234
 )
+
+require_relative './seeds/product.rb'

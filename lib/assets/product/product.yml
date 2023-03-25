@@ -1,0 +1,33 @@
+- user_uid: abcdef12345
+  subject_key: world_history
+  default_key: 325e2510-c9d6-2aae-8e0e-5ca75d36cca6
+  name: 古代ローマの年代暗記
+  description: マニアのための古代ローマ年代暗記100問
+  sale:
+    price: 8000
+    publish: true
+  question:
+    - question: ローマ建国
+      correct: 前753
+      dummy:
+        - 前752
+        - 前754
+        - 前755
+    - question: ローマ、共和政へと移行
+      correct: 前509
+      dummy:
+        - 前507
+        - 前508
+        - 前510
+    - question: 最初の成文法「十二表法」が採択される
+      correct: 前449
+      dummy:
+        - 前446
+        - 前447
+        - 前448
+    - question: アッピア街道、敷設される
+      correct: 前312
+      dummy:
+        - 前313
+        - 前314
+        - 前315
