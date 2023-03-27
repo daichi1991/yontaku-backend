@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Rate, type: :model do
-  before do
-    FactoryBot.create(:payment_method, key:'free')
-  end
 
   context "バリデーション" do
     it "全てのカラムに値がある場合、有効" do

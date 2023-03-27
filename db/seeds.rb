@@ -17,6 +17,7 @@ payment_method2 = PaymentMethod.find_or_create_by(
 
 user = User.find_or_create_by(
   uid: 'abcdef12345',
+  username: 'テストユーザー'
   active: true
 )
 

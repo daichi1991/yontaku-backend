@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Questions", type: :request do
   before do
-    FactoryBot.create(:payment_method, key:'free')
     FactoryBot.create(:user, uid:'abcdefg12345')
     FactoryBot.create(:question)
   end

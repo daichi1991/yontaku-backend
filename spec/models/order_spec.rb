@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
-  before do
-    FactoryBot.create(:payment_method, key:'free')
-  end
   describe "バリデーションチェック" do
     it "account, saleがある場合、有効" do
       order = FactoryBot.build(:order)

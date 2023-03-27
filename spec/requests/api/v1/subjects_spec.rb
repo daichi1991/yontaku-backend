@@ -3,7 +3,6 @@ require 'fileutils'
 
 RSpec.describe "Api::V1::Subjects", type: :request do
   before do
-    FactoryBot.create(:payment_method, key:'free')
     FactoryBot.create(:user, uid:'abcdefg12345')
     FactoryBot.create_list(:subject, 3)
   end

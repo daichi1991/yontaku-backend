@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  before do
-    FactoryBot.create(:payment_method, key:'free')
-  end
-
   context 'バリデーションチェック' do
     it "uid, activeがある場合、有効" do
       user = FactoryBot.build(:user)

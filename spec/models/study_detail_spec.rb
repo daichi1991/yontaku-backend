@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe StudyDetail, type: :model do
-
-  before do
-    FactoryBot.create(:payment_method, key:'free')
-  end
   
   describe "バリデーションチェック" do
     it "全てのカラムに値がある 有効" do

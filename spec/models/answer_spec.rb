@@ -2,10 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
 
-  before do
-    FactoryBot.create(:payment_method, key:'free')
-  end
-
   it "question, answer, correctがある場合、有効" do
     answer = FactoryBot.build(:answer)
     expect(answer).to be_valid

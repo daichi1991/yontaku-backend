@@ -6,9 +6,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:create, :update, :show] do
+      resources :users, only: [:create, :show] do
         collection do
           get 'current_user_infrmation'
+          put 'update'
         end
       end
       resources :accounts, only: [:create, :show] do

@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   mount_uploader :image, ImageUploader
   validates :user, presence: true
   validates :name, presence: true
+  validate :validate_username
 
   belongs_to :user, foreign_key: "user_id"
   belongs_to :subject, foreign_key: "subject_id"
@@ -13,6 +14,13 @@ class Product < ApplicationRecord
 
   scope :where_user, ->(user) { where(user: user) }
 
+  def validate_username
+    user = self.user
+    return if user == nil
+    return if user.username != nil
+    errors.add(:user, 'ユーザー名の入力が必要です')
+  end
+
   def self.last_sale(product)
     sale = Sale.last_sale(product)
   end
@@ -20,6 +28,8 @@ class Product < ApplicationRecord
   def self.product_with_info(product)
     result = {}
     result.store('product', product)
+    user = product.user
+    result.store('user', user)
     result.store('sale', last_sale(product))
     rate = get_rate(product)
     result.store('rate', rate)

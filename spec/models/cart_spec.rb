@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Cart, type: :model do
-  before do
-    FactoryBot.create(:payment_method, key:'free')
-  end
   describe "バリデーションチェック" do
     it "user, saleがある場合 有効" do
       cart = FactoryBot.build(:cart)

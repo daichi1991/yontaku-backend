@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Rates", type: :request do
   before do
-    FactoryBot.create(:payment_method, key:'free')
     @user = FactoryBot.create(:user, uid:'vwxyz12345', active: true)
     @user2 = FactoryBot.create(:user, uid:'abcdefg12345', active: true)
     @product = FactoryBot.create(:product, user: @user)
