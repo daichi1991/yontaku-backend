@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   include FirebaseUtils
 
-  before_action :authenticate, only: [:update, :current_user_infrmation]
+  before_action :authenticate, only: [:update, :current_user_information]
 
   def create
     payload = verify_id_token(request.headers["Authorization"]&.split&.last)
@@ -29,7 +29,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def current_user_infrmation
+  def current_user_information
     @user = @current_user
     if @user
       render :show

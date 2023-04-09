@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:create, :show] do
         collection do
-          get 'current_user_infrmation'
+          get 'current_user_information'
           put 'update'
         end
       end
