@@ -44,7 +44,13 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def my_products
-    @products = Product.my_products(@current_user)
+    @products = Product.user_products(@current_user)
+    render :products
+  end
+
+  def index_by_user
+    user = User.find(params[:user_id])
+    @products = Product.user_products(user)
     render :products
   end
 

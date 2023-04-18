@@ -49,7 +49,7 @@ class Product < ApplicationRecord
     return products_array
   end
 
-  def self.my_products(user)
+  def self.user_products(user)
     products = where_user(user)
     products_array = products_with_info(products)
   end

@@ -54,7 +54,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       verify_id_token_default_user_stub
       user_id = User.find_by(uid: "abcdefg12345").id
       expect {
-        put "/api/v1/users/#{user_id}.json", params: 
+        put "/api/v1/users/update.json", params: 
         {
           user: {
             username: "テストユーザー"
@@ -71,7 +71,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       user_id = User.find_by(uid: "abcdefg12345").id
       username = 'a' * 101
       expect {
-        put "/api/v1/users/#{user_id}.json", params: 
+        put "/api/v1/users/update.json", params: 
         {
           user: {
             username: username
@@ -84,11 +84,11 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
-  describe "GET /users/current_user_infrmation" do
+  describe "GET /users/current_user_information" do
     it "自分の情報を取得する" do
       verify_id_token_default_user_stub
       current_user = User.find_by(uid: "abcdefg12345")
-      get "/api/v1/users/current_user_infrmation.json", headers: headers
+      get "/api/v1/users/current_user_information.json", headers: headers
       expect(response.status).to eq(200)
       json = JSON.parse(response.body)
       expect(json["id"]).to eq current_user.id

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
         collection do
           get 'current_user_information'
           put 'update'
+          put 'delete_image'
         end
       end
       resources :accounts, only: [:create, :show] do
@@ -22,6 +23,7 @@ Rails.application.routes.draw do
           get 'search'
           get 'search_by_subject'
           get 'my_products'
+          get 'index_by_user'
         end
       end
       resources :sales, only: [:create, :show]

@@ -102,6 +102,17 @@ RSpec.describe "Api::V1::Products", type: :request do
     end
   end
 
+  describe "GET /products/index_by_user" do
+    it "user_productsを取得する" do
+      user = User.find_by(uid: "abcdefg12345")
+      FactoryBot.create(:product, name: "user_product", user: user)
+      get "/api/v1/products/index_by_user.json?user_id=#{user.id}"
+      expect(response.status).to eq(200)
+      json = JSON.parse(response.body)
+      expect(json[0]["name"]).to eq "user_product"
+    end
+  end
+
   describe "GET /products/search" do
     before do
       Product.last.destroy

@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   include FirebaseUtils
 
-  before_action :authenticate, only: [:update, :current_user_information]
+  before_action :authenticate, only: [:update, :current_user_information, :delete_image]
 
   def create
     payload = verify_id_token(request.headers["Authorization"]&.split&.last)
@@ -18,6 +18,16 @@ class Api::V1::UsersController < ApplicationController
       render :show
     else
       render json: @user.errors, status: 400 and return
+    end
+  end
+
+  def delete_image
+    @user = @current_user
+    @user.remove_image!
+    if @user.save
+      render :show
+    else
+      render status: 400, json: { status: 400, message: 'Bad Request' }
     end
   end
 
@@ -40,6 +50,6 @@ class Api::V1::UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:username, :image)
+    params.require(:user).permit(:username, :description, :image, :remove_image)
   end
 end
